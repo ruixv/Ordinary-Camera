@@ -17,7 +17,7 @@ switch TestLetter
         % OCCLUDER DEFINITION
         Occ_size = [0.075 0 0.075];
         if useEstimatedOccPos
-            %% Estimated using occluder localization scripts
+           %% Estimated using occluder localization scripts
             % Projection for mushroom
             Occ_LLcorner = [0.4583 0.5408 0.2026];
             
@@ -30,7 +30,7 @@ switch TestLetter
             % Projection for RGB bars (colbar)
             %Occ_LLcorner = [0.4693 0.5629 0.2080];
             
-            %%
+       %%
         else
             % True
             Occ_LLcorner = [0.475 D-0.460 0.214];
