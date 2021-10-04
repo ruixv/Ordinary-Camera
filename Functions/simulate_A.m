@@ -27,7 +27,7 @@ for mc = NumBlocks_col:-1:1 %For each scene patch
         if simuParams.viewAngleCorrection==1
             MM = ViewingAngleFactor([Mon_xdiscr(mc)-simuParams.IlluminationBlock_Size(1)/2, lightposy ,Mon_zdiscr(mr)-simuParams.IlluminationBlock_Size(2)/2],wall_matr(1,:), wall_matr(3,end:-1:1), simuParams.D);
         elseif simuParams.viewAngleCorrection==0
-            MM = ones(length(wall_matr(1,:)),length(wall_matr(3,end:-1:1)));
+            MM = ones(length(wall_matr(1,:)),length(wall_matr(3,end:-1:1)));    % 126*126 , 很奇怪
         end
 
         % Discretize a monitor block

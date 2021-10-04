@@ -26,7 +26,7 @@ numPixels = 1008; % Number of pixels in camera measurement
 % Parameters
 Ndiscr_mon = 6; %Discretization of each scene patch
 downsamp_factor = 3; %Downsampling of measurements 2^downsamp_factor
-viewAngleCorrection = 1;  %True/False
+viewAngleCorrection = 0;  %True/False
 useEstimatedOccPos = true; %Use estimated occluder position or not
 
 load_experiment_config_data_reconstruction
@@ -103,14 +103,20 @@ switch scene
         sb = 1.9063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*1.04;
     case 'bu'
         [test_image1,ground_truth1]=load_image1('image_test_bur20.mat',calibParams.filepath,downsamp_factor);
+        test_image1 = normimage(test_image1);
         Occ_LLcorner = [0.4733   0.5661    0.2072]; %Estimated occluder position from localization script
         
         tv_reg_param = 1e07*[5   25   25];  %TV regularization parameter
         
          %Discretization dependent scaling of A matrix
-        sr = 12500/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.9; 
+        sr = 12500/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.9;
         sg = 15625/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.98; 
         sb = 1.7188e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*1.04;
+        
+        tv_reg_param = tv_reg_param ./ 1e12;    % L2 Normalization -- need (e6)^2
+        sr = sr / 1e6;
+        sg = sg / 1e6;
+        sb = sb / 1e6;
     case 'rgb'
         [test_image1,ground_truth1]=load_image1('image_test_colbar20.mat',calibParams.filepath,downsamp_factor);
         Occ_LLcorner = [0.4693 0.5629 0.2080]; %Estimated occluder position from localization script
