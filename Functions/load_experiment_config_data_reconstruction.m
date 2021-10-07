@@ -7,6 +7,57 @@
 
 switch TestLetter
     
+    case 'NLOS_passive'
+        filename = 'NLOSPassive';
+        subblocksperaxis = [1 1];
+        NumBlocks_sim = [25 43].*subblocksperaxis;
+        NumBlocks_cal = [25 43];
+        D = 1.1;
+        
+        % OCCLUDER DEFINITION
+        Occ_size = [0.02 0 0.075];
+        if useEstimatedOccPos
+           %% Estimated using occluder localization scripts
+            % Projection for mushroom
+            Occ_LLcorner = [-0.03 0.43 -0.05] + [0.8,0, 0.8];
+            
+            %Projection for Tommy
+            %Occ_LLcorner = [0.4569 0.5744 0.2080];
+            
+            % Projection for BU red (bur)
+            %Occ_LLcorner = [0.4733   0.5661    0.2072];
+          
+            % Projection for RGB bars (colbar)
+            %Occ_LLcorner = [0.4693 0.5629 0.2080];
+            
+       %%
+        else
+            % True
+            Occ_LLcorner = [-0.03 0.43 -0.05] + [0.8,0, 0.8];
+        end
+        
+        Occluder = [Occ_LLcorner; Occ_LLcorner + Occ_size];
+        
+        %CAMERA CONFIG
+        FOV_size = [1.12 0.40];
+        FOV_LLCorner = [-0.73 -0.25] + [0.8, 0.8];
+        FOV_cord = [FOV_LLCorner; FOV_LLCorner + FOV_size];
+        
+        % MONITOR CONFIG
+        Mon_Offset = [-0.17 -0.1] + [0.8, 0.8];
+        
+        NumBlocks_col = NumBlocks_cal(2);
+        NumBlocks_row = NumBlocks_cal(1);
+        ScreenSize = [0.34 0.194];
+        ScreenResolution = [1920 1080];
+        NumPixelsPerMonitorBlock = 44;
+        PixelSize_m = (ScreenSize./ScreenResolution);   %    1.0e-03 * [0.1771    0.1852], 每个像素的大小
+        
+        Mon_Offset(2) = Mon_Offset(2) + PixelSize_m(2)*mod(ScreenResolution(2),NumBlocks_cal(1));
+        Mon_Offset(1) = Mon_Offset(1) + 1*PixelSize_m(1)*mod(ScreenResolution(1),NumBlocks_cal(2));
+        
+        IlluminationBlock_Size = PixelSize_m.*NumPixelsPerMonitorBlock./[subblocksperaxis(2) subblocksperaxis(1)];
+       
     case 'D11'
         filename = 'TestPosD11';
         subblocksperaxis = [1 1];
@@ -57,8 +108,6 @@ switch TestLetter
         Mon_Offset(1) = Mon_Offset(1) + 1*PixelSize_m(1)*mod(ScreenResolution(1),NumBlocks_cal(2));
         
         IlluminationBlock_Size = PixelSize_m.*NumPixelsPerMonitorBlock./[subblocksperaxis(2) subblocksperaxis(1)];
-       
-        
         
     case 'D11Video'
         filename = 'TestPosD11Video';

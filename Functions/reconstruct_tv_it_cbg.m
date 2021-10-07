@@ -30,7 +30,9 @@ function [reconstruction] = reconstruct_tv_it_cbg(A,cscale, measurement, reg, Nu
     testr = rs(( cscale(1)^2 * ATA + tik_reg(1)^4*(DtD))\(cscale(1)*AT) * mr(:));
     testg = rs(( cscale(2)^2 * ATA + tik_reg(2)^4*(DtD))\(cscale(2)*AT) * mg(:));
     testb = rs(( cscale(3)^2 * ATA + tik_reg(3)^4*(DtD))\(cscale(3)*AT) * mb(:));
-    
+%     testr = rs(pinv( cscale(1)^2 * ATA + tik_reg(1)^4*(DtD)) * cscale(1)*AT * mr(:));
+%     testg = rs(pinv( cscale(2)^2 * ATA + tik_reg(2)^4*(DtD)) * cscale(2)*AT * mg(:));
+%     testb = rs(pinv( cscale(3)^2 * ATA + tik_reg(3)^4*(DtD)) * cscale(3)*AT * mb(:));
 
     %%
     % TV Parameters
