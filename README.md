@@ -96,7 +96,7 @@ occ_corner(3,:,9) = Occ_LLcorner + [0.5, 0, -0.75];
 occ_corner(4,:,9) = Occ_LLcorner + [0.6, 0, -0.75];
 ```
 The occluder 1 with regular shape is
-```
+```matlab
 occ_corner(1,:,1) = [0.63, 0.3, 0.32];
 occ_corner(2,:,1) = [0.63, 0.3, 0.32] + [0.34, 0, 0];
 occ_corner(3,:,1) = [0.63, 0.3, 0.32] + [0, 0, 0.38];
