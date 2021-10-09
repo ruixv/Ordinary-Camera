@@ -78,13 +78,16 @@ numPixels = floor(numPixels/(2^downsamp_factor));
 %           * Mushroom scene:       'mushroom'
 %           * Tommy scene:          'tommy'
 
-% scene = 'bu';
-scene = 'nlospassive';
+scene = 'rgb';
+% scene = 'nlospassive';
 
 switch scene
     case 'mushroom'
-        [test_image1,ground_truth1]=load_image1('image_test_mushroom20.mat',calibParams.filepath,downsamp_factor);   
-        Occ_LLcorner = [0.4583 0.5408 0.2026]; %Estimated occluder position from localization script
+        image_name = ['testreal_',scene,'.png'];
+        ground_truth1 = imread(['./Data/NLOSPassive/groundtruth/',image_name]);
+        test_image1 = normimage(double(imread(['./Data/NLOSPassive/',image_name])));
+        test_image1 = imresize(test_image1, [126,126]);
+        Occ_LLcorner = [-0.03 0.43 -0.1] + [0.8,0, 0.8]; %Estimated occluder position from localization script
         
         tv_reg_param = 1e08 * [0.51    0.561    2.448]; %TV regularization parameter
         
@@ -92,9 +95,17 @@ switch scene
         sr = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.9; 
         sg = 1.5313e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.98; 
         sb = 16250/(Ndiscr_mon^2)*prod(subblocksperaxis)*1.04;
+        
+        tv_reg_param = tv_reg_param ./ 1e12;    % L2 Normalization -- need (e6)^2
+        sr = sr / 1e6;
+        sg = sg / 1e6;
+        sb = sb / 1e6;
     case 'tommy'
-        [test_image1,ground_truth1]=load_image1('image_test_smilehat20.mat',calibParams.filepath,downsamp_factor);
-        Occ_LLcorner = [0.4569 0.5744 0.2080]; %Estimated occluder position from localization script
+        image_name = ['testreal_',scene,'.png'];
+        ground_truth1 = imread(['./Data/NLOSPassive/groundtruth/',image_name]);
+        test_image1 = normimage(double(imread(['./Data/NLOSPassive/',image_name])));
+        test_image1 = imresize(test_image1, [126,126]);
+        Occ_LLcorner = [-0.03 0.43 -0.1] + [0.8,0, 0.8]; %Estimated occluder position from localization script
         
         tv_reg_param = 1e07 * [5.72    6.76    5.72];  %TV regularization parameter
         
@@ -102,10 +113,18 @@ switch scene
         sr = 1.1406e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.9; 
         sg = 1.3594e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.98; 
         sb = 1.9063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*1.04;
+        
+        tv_reg_param = tv_reg_param ./ 1e12;    % L2 Normalization -- need (e6)^2
+        sr = sr / 1e6;
+        sg = sg / 1e6;
+        sb = sb / 1e6;
+        
     case 'bu'
-        [test_image1,ground_truth1]=load_image1('image_test_bur20.mat',calibParams.filepath,downsamp_factor);
-        test_image1 = normimage(test_image1);
-        Occ_LLcorner = [0.4733   0.5661    0.2072]; %Estimated occluder position from localization script
+        image_name = ['testreal_',scene,'.png'];
+        ground_truth1 = imread(['./Data/NLOSPassive/groundtruth/',image_name]);
+        test_image1 = normimage(double(imread(['./Data/NLOSPassive/',image_name])));
+        test_image1 = imresize(test_image1, [126,126]);
+        Occ_LLcorner = [-0.03 0.43 -0.1] + [0.8,0, 0.8]; %Estimated occluder position from localization script
         
         tv_reg_param = 1e07*[5   25   25];  %TV regularization parameter
         
@@ -118,15 +137,16 @@ switch scene
         sr = sr / 1e6;
         sg = sg / 1e6;
         sb = sb / 1e6;
-    case 'nlospassive'
-        [test_image1,ground_truth1]=load_image1('image_test_colbar20.mat',calibParams.filepath,downsamp_factor);
-        test_image1 = normimage(double(imread('E:\Ordinary-Camera\Data\NLOSPassive\testreal_rgb.png')));
+    case 'rgb'
+        image_name = ['testreal_',scene,'.png'];
+        ground_truth1 = imread(['./Data/NLOSPassive/groundtruth/',image_name]);
+        test_image1 = normimage(double(imread(['./Data/NLOSPassive/',image_name])));
         test_image1 = imresize(test_image1, [126,126]);
         Occ_LLcorner = [-0.03 0.43 -0.1] + [0.8,0, 0.8]; %Estimated occluder position from localization script
         
         tv_reg_param = 1e06 * [52.5   50   47.5];  %TV regularization parameter
         
-         %Discretization dependent scaling of A matrix
+        %Discretization dependent scaling of A matrix
         sr = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.9; 
         sg = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.98; 
         sb = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*1.04;
@@ -135,16 +155,6 @@ switch scene
         sr = sr / 1e6;
         sg = sg / 1e6;
         sb = sb / 1e6;
-    case 'rgb'
-        [test_image1,ground_truth1]=load_image1('image_test_colbar20.mat',calibParams.filepath,downsamp_factor);
-        Occ_LLcorner = [0.4693 0.5629 0.2080]; %Estimated occluder position from localization script
-        
-        tv_reg_param = 1e06 * [52.5   50   47.5];  %TV regularization parameter
-        
-        %Discretization dependent scaling of A matrix
-        sr = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.9; 
-        sg = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*0.98; 
-        sb = 1.4063e+04/(Ndiscr_mon^2)*prod(subblocksperaxis)*1.04;
 end
 
 %%
@@ -214,7 +224,7 @@ final_im1 = reconstruct_tv_it_cbg(simA,[sr,sg,sb],  test_image1, tv_reg_param, N
 figure()
 
 subplot(1,2,1)
-imshow(ground_truth1/255)
+imshow(ground_truth1)
 title('Ground truths')
 subplot(1,2,2)
-imshow(final_im1(:,:,:))
+imshow(flip(final_im1,2))
