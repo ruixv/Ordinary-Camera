@@ -26,3 +26,10 @@ Supplementary material results:
 
 # How to use this repository
 
+For Figure R6 column (a), run script 'fig4_column_c.m' and imagesc(imresize(simA,[2560,2560])); cond(simA)
+```matlab
+fig4_column_c   % run the manuscript to estimate matrix A (and solve TV regularized optimization).
+imagesc(imresize(simA,[2560,2560]));    % show the matrix A; resize is to make the image size appropriate.
+cond(simA)  % calculate the 2-norm condition number of simA
+```
+
